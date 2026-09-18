@@ -1,12 +1,12 @@
-# 🏥 ClinicFlow
+ClinicFlow
 
 Sistema full stack para gerenciamento de clínicas, desenvolvido com **Angular, Spring Boot e PostgreSQL**, com gestão de pacientes, médicos e consultas, dashboard administrativo e integração com **Google Gemini** para geração de resumos administrativos do histórico de atendimentos.
 
 O projeto foi desenvolvido com foco na aplicação prática de conceitos de desenvolvimento full stack, organização em camadas, construção de APIs REST, validações, regras de negócio e integração com serviços externos.
 
-## ✨ Funcionalidades
+Funcionalidades
 
-### 👤 Pacientes
+ Pacientes
 - Cadastro, edição, consulta e exclusão de pacientes
 - Validação de CPF
 - Validação e formatação de telefone
@@ -16,7 +16,7 @@ O projeto foi desenvolvido com foco na aplicação prática de conceitos de dese
 - Bloqueio da exclusão quando existem consultas vinculadas
 - Visualização do histórico de consultas
 
-### 🩺 Médicos
+Médicos
 - Cadastro, edição, consulta e exclusão de médicos
 - Validação de CRM
 - Cadastro de especialidade e dados de contato
@@ -24,7 +24,7 @@ O projeto foi desenvolvido com foco na aplicação prática de conceitos de dese
 - Ordenação e paginação
 - Bloqueio da exclusão quando existem consultas vinculadas
 
-### 📅 Consultas
+ Consultas
 - Agendamento e gerenciamento de consultas
 - Associação entre paciente e médico
 - Status: **Agendada, Realizada e Cancelada**
@@ -35,23 +35,24 @@ O projeto foi desenvolvido com foco na aplicação prática de conceitos de dese
 - Ordenação priorizando próximas consultas agendadas
 - Paginação
 
-### 📊 Dashboard
+ Dashboard
 - Total de pacientes cadastrados
 - Total de médicos cadastrados
 - Quantidade de consultas agendadas
 - Quantidade de consultas realizadas
 - Exibição das próximas consultas
 
-### 🤖 Integração com Inteligência Artificial
+Integração com Inteligência Artificial
+
 O ClinicFlow possui integração com a **API do Google Gemini** para geração de um resumo administrativo do histórico de consultas de um paciente.
 
 A integração foi configurada para organizar informações já registradas no sistema de maneira objetiva e cronológica, sem realizar diagnóstico, recomendar medicamentos, tratamentos ou outras condutas médicas.
 
 As credenciais da API são mantidas fora do código-fonte por meio de variáveis de ambiente.
 
-## 🛠️ Tecnologias
+ Tecnologias
 
-### Backend
+ Backend
 - Java 21
 - Spring Boot
 - Spring Data JPA
@@ -61,7 +62,7 @@ As credenciais da API são mantidas fora do código-fonte por meio de variáveis
 - Maven
 - Google Gemini API
 
-### Frontend
+ Frontend
 - Angular
 - TypeScript
 - Angular Material
@@ -70,7 +71,7 @@ As credenciais da API são mantidas fora do código-fonte por meio de variáveis
 - Signals
 - Reactive Forms
 
-## 🏗️ Estrutura do projeto
+Estrutura do projeto
 
 O repositório está dividido em duas aplicações:
 
@@ -82,7 +83,7 @@ ClinicFlow/
 
 No backend, a aplicação utiliza uma arquitetura em camadas, separando responsabilidades entre controllers, services, repositories, entidades e DTOs.
 
-## 🔐 Variáveis de ambiente
+Variáveis de ambiente
 
 Para executar o backend, é necessário configurar:
 
@@ -93,16 +94,16 @@ GEMINI_API_KEY=sua_chave_da_api_gemini
 
 Nenhuma senha ou chave de API é armazenada diretamente no código-fonte.
 
-## 🚀 Como executar
+Como executar
 
-### Pré-requisitos
+Pré-requisitos
 
 - Java 21
 - Node.js e npm
 - PostgreSQL
 - Angular CLI
 
-### Backend
+Backend
 
 Configure um banco PostgreSQL chamado:
 
@@ -119,8 +120,7 @@ A API será iniciada em:
 ```text
 http://localhost:8080
 ```
-
-### Frontend
+ Frontend
 
 Dentro da pasta `frontend`, instale as dependências:
 
@@ -140,9 +140,6 @@ A aplicação poderá ser acessada em:
 http://localhost:4200
 ```
 
-## 📸 Demonstração
-
-> Screenshots da aplicação serão adicionados aqui.
 
 ## 📚 Objetivo do projeto
 

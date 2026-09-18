@@ -1,0 +1,324 @@
+<div class="page">
+
+  <a routerLink="/pacientes" class="voltar">
+    <mat-icon>arrow_back</mat-icon>
+    Voltar para pacientes
+  </a>
+
+  @if (carregando()) {
+
+    <div class="state-container">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+
+  } @else if (paciente(); as p) {
+
+    <!-- CABEÇALHO DO PACIENTE -->
+    <div class="header-card">
+
+      <div class="avatar">
+        {{ p.nome.charAt(0) }}
+      </div>
+
+      <div class="header-info">
+
+        <h1>
+          {{ p.nome }}
+        </h1>
+
+        <div class="meta">
+
+          <span>
+            CPF: {{ p.cpf }}
+          </span>
+
+          @if (p.telefone) {
+            <span>
+              • {{ p.telefone }}
+            </span>
+          }
+
+          @if (p.email) {
+            <span>
+              • {{ p.email }}
+            </span>
+          }
+
+        </div>
+
+      </div>
+
+      <button
+        mat-stroked-button
+        [routerLink]="['/pacientes', p.id, 'editar']"
+      >
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+
+    </div>
+
+
+    <!-- RESUMO COM IA -->
+    <div class="card resumo-card">
+
+      <div class="resumo-header">
+
+        <div class="resumo-title">
+
+          <div class="ia-icon-container">
+            <mat-icon class="ia-icon">
+              auto_awesome
+            </mat-icon>
+          </div>
+
+          <div>
+            <h2>
+              Resumo do histórico
+            </h2>
+
+            <span class="ia-label">
+              Gerado com inteligência artificial
+            </span>
+          </div>
+
+        </div>
+
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          (click)="gerarResumo()"
+          [disabled]="gerandoResumo()"
+        >
+
+          @if (gerandoResumo()) {
+
+            <mat-spinner
+              diameter="18"
+              class="btn-spinner"
+            >
+            </mat-spinner>
+
+            Gerando...
+
+          } @else {
+
+            <mat-icon>
+              {{ p.resumoIa ? 'refresh' : 'auto_awesome' }}
+            </mat-icon>
+
+            {{
+              p.resumoIa
+                ? 'Atualizar resumo'
+                : 'Gerar resumo com IA'
+            }}
+
+          }
+
+        </button>
+
+      </div>
+
+
+      <!-- CARREGANDO NOVO RESUMO -->
+      @if (gerandoResumo()) {
+
+        <div class="resumo-gerando">
+
+          <mat-icon>
+            auto_awesome
+          </mat-icon>
+
+          <div>
+            <strong>
+              Analisando o histórico...
+            </strong>
+
+            <span>
+              A IA está organizando as informações das consultas deste paciente.
+            </span>
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- ERRO DA IA -->
+      @if (erroResumo()) {
+
+        <div class="resumo-erro">
+
+          <mat-icon>
+            error_outline
+          </mat-icon>
+
+          <div class="erro-conteudo">
+
+            <strong>
+              Não foi possível atualizar o resumo
+            </strong>
+
+            <span>
+              {{ erroResumo() }}
+            </span>
+
+          </div>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="gerarResumo()"
+            [disabled]="gerandoResumo()"
+          >
+            Tentar novamente
+          </button>
+
+        </div>
+
+      }
+
+
+      <!-- RESUMO EXISTENTE -->
+      @if (p.resumoIa) {
+
+        <div class="resumo-conteudo">
+
+          <p class="resumo-texto">
+            {{ p.resumoIa }}
+          </p>
+
+        </div>
+
+        @if (p.resumoIaGeradoEm) {
+
+          <div class="resumo-data">
+
+            <mat-icon>
+              schedule
+            </mat-icon>
+
+            <span>
+              Última atualização:
+              {{ p.resumoIaGeradoEm | date:'dd/MM/yyyy' }}
+              às
+              {{ p.resumoIaGeradoEm | date:'HH:mm' }}
+            </span>
+
+          </div>
+
+        }
+
+      } @else if (!gerandoResumo() && !erroResumo()) {
+
+        <!-- AINDA NÃO EXISTE RESUMO -->
+        <div class="resumo-vazio">
+
+          <mat-icon>
+            auto_awesome
+          </mat-icon>
+
+          <div>
+
+            <strong>
+              Nenhum resumo gerado ainda
+            </strong>
+
+            <p>
+              Use a inteligência artificial para organizar
+              o histórico de consultas deste paciente em
+              um resumo objetivo.
+            </p>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- AVISO -->
+      <div class="resumo-disclaimer">
+
+        <mat-icon>
+          info
+        </mat-icon>
+
+        <span>
+          Este resumo é gerado automaticamente para apoio
+          administrativo e não constitui diagnóstico,
+          orientação ou recomendação médica.
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- HISTÓRICO -->
+    <div class="card">
+
+      <h2>
+        Histórico de Consultas
+      </h2>
+
+      @if (consultas().length === 0) {
+
+        <p class="vazio">
+          Nenhuma consulta registrada para este paciente.
+        </p>
+
+      } @else {
+
+        <div
+          class="consulta-item"
+          *ngFor="let consulta of consultas()"
+        >
+
+          <div class="consulta-data">
+
+            <span class="dia">
+              {{ consulta.dataHora | date:'dd/MM' }}
+            </span>
+
+            <span class="ano">
+              {{ consulta.dataHora | date:'yyyy' }}
+            </span>
+
+          </div>
+
+          <div class="consulta-info">
+
+            <div class="consulta-medico">
+              {{ consulta.medicoNome }}
+            </div>
+
+            <div class="consulta-obs">
+              {{
+                consulta.observacoes ||
+                'Sem observações'
+              }}
+            </div>
+
+          </div>
+
+          <mat-chip
+            [class]="
+              'status-' +
+              consulta.status.toLowerCase()
+            "
+          >
+            {{ consulta.status }}
+          </mat-chip>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

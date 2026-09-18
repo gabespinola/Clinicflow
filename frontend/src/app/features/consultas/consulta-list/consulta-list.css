@@ -1,0 +1,246 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 4px 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+/* BUSCA E FILTROS */
+
+.filtros-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  height: 44px;
+  padding: 0 8px 0 14px;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.busca:focus-within {
+  border-color: var(--color-text-muted);
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+}
+
+.busca-icon {
+  margin-right: 10px;
+  color: #9ca3af;
+}
+
+.busca input {
+  flex: 1;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.busca input::placeholder {
+  color: #9ca3af;
+}
+
+.busca button {
+  flex-shrink: 0;
+}
+
+/* FILTROS DE STATUS */
+
+.filtros-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+
+  background-color: #f8f9fb;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+}
+
+.filtro-status {
+  border: none;
+  background: transparent;
+
+  padding: 8px 12px;
+  border-radius: 6px;
+
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.filtro-status:hover {
+  color: var(--color-text);
+  background-color: #eef0f3;
+}
+
+.filtro-status.ativo {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+/* ESTADOS */
+
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px;
+  color: var(--color-text-muted);
+}
+
+.state-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #cbd0d8;
+}
+
+/* TABELA */
+
+.tabela {
+  width: 100%;
+}
+
+.tabela .mat-mdc-header-row {
+  background-color: #f8f9fb;
+}
+
+.tabela .mat-mdc-header-cell {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+}
+
+.tabela .mat-mdc-row {
+  transition: background-color 0.15s ease;
+}
+
+.tabela .mat-mdc-row:hover {
+  background-color: #f8f9fb;
+}
+
+.data-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-principal {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.hora {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.nome-cell {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.col-acoes {
+  text-align: right;
+  width: 150px;
+}
+
+.btn-danger {
+  color: #dc2626;
+}
+
+/* STATUS DAS CONSULTAS */
+
+.status-realizada {
+  --mat-chip-selected-container-color: #d1fae5;
+  --mat-chip-selected-label-text-color: #065f46;
+}
+
+.status-agendada {
+  --mat-chip-selected-container-color: #dbeafe;
+  --mat-chip-selected-label-text-color: #1e40af;
+}
+
+.status-cancelada {
+  --mat-chip-selected-container-color: #fee2e2;
+  --mat-chip-selected-label-text-color: #991b1b;
+}
+
+/* RESPONSIVIDADE DOS FILTROS */
+
+@media (max-width: 850px) {
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .busca {
+    max-width: none;
+  }
+
+  .filtros-status {
+    width: fit-content;
+  }
+}

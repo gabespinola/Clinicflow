@@ -1,0 +1,254 @@
+<div class="page">
+
+  <a routerLink="/medicos" class="voltar">
+    <mat-icon>arrow_back</mat-icon>
+    Voltar para médicos
+  </a>
+
+  <div class="card">
+
+    @if (carregando()) {
+
+      <div class="state-container">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+
+    } @else {
+
+      <div class="form-header">
+
+        <div>
+          <h1>
+            {{ modoEdicao() ? 'Editar médico' : 'Novo médico' }}
+          </h1>
+
+          <p class="subtitle">
+            {{
+              modoEdicao()
+                ? 'Atualize as informações do médico.'
+                : 'Cadastre um novo médico na clínica.'
+            }}
+          </p>
+        </div>
+
+        <div class="header-icon">
+          <mat-icon>medical_services</mat-icon>
+        </div>
+
+      </div>
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="salvar()"
+        class="form"
+      >
+
+        <div class="section-title">
+          <mat-icon>badge</mat-icon>
+          <span>Dados profissionais</span>
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+        >
+
+          <mat-label>Nome completo</mat-label>
+
+          <mat-icon matPrefix>person</mat-icon>
+
+          <input
+            matInput
+            formControlName="nome"
+            placeholder="Ex: Dr. João Silva"
+          >
+
+          @if (
+            form.get('nome')?.hasError('required') &&
+            form.get('nome')?.touched
+          ) {
+            <mat-error>Nome é obrigatório</mat-error>
+          }
+
+          @if (
+            form.get('nome')?.hasError('minlength') &&
+            form.get('nome')?.touched
+          ) {
+            <mat-error>
+              Informe um nome com pelo menos 3 caracteres
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>CRM</mat-label>
+
+          <mat-icon matPrefix>badge</mat-icon>
+
+          <input
+            matInput
+            formControlName="crm"
+            placeholder="Ex: 12345-PB"
+            maxlength="12"
+            (input)="aoDigitarCrm($event)"
+          >
+
+          @if (
+            form.get('crm')?.hasError('required') &&
+            form.get('crm')?.touched
+          ) {
+            <mat-error>
+              CRM é obrigatório
+            </mat-error>
+          }
+
+          @if (
+            form.get('crm')?.hasError('crmInvalido') &&
+            form.get('crm')?.touched
+          ) {
+            <mat-error>
+              Informe o CRM no formato 12345-PB
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Especialidade</mat-label>
+
+          <mat-icon matPrefix>local_hospital</mat-icon>
+
+          <input
+            matInput
+            formControlName="especialidade"
+            placeholder="Ex: Cardiologia"
+          >
+
+          @if (
+            form.get('especialidade')?.hasError('required') &&
+            form.get('especialidade')?.touched
+          ) {
+            <mat-error>
+              Especialidade é obrigatória
+            </mat-error>
+          }
+
+          @if (
+            form.get('especialidade')?.hasError('minlength') &&
+            form.get('especialidade')?.touched
+          ) {
+            <mat-error>
+              Informe uma especialidade válida
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <div class="section-title">
+          <mat-icon>contact_phone</mat-icon>
+          <span>Contato</span>
+        </div>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Telefone</mat-label>
+
+          <mat-icon matPrefix>phone</mat-icon>
+
+          <input
+            matInput
+            formControlName="telefone"
+            placeholder="(83) 99999-9999"
+            maxlength="15"
+            inputmode="tel"
+            (input)="aoDigitarTelefone($event)"
+          >
+
+          @if (
+            form.get('telefone')?.hasError('telefoneInvalido') &&
+            form.get('telefone')?.touched
+          ) {
+            <mat-error>
+              Informe um telefone com DDD
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>E-mail</mat-label>
+
+          <mat-icon matPrefix>mail</mat-icon>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="exemplo@email.com"
+          >
+
+          @if (
+            form.get('email')?.hasError('email') &&
+            form.get('email')?.touched
+          ) {
+            <mat-error>
+              Informe um e-mail válido
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <div class="actions">
+
+          <button
+            mat-stroked-button
+            type="button"
+            routerLink="/medicos"
+            [disabled]="salvando()"
+          >
+            Cancelar
+          </button>
+
+          <button
+            mat-flat-button
+            type="submit"
+            class="btn-primary"
+            [disabled]="salvando()"
+          >
+
+            @if (salvando()) {
+
+              <mat-spinner
+                diameter="18"
+                class="btn-spinner">
+              </mat-spinner>
+
+              Salvando...
+
+            } @else {
+
+              <mat-icon>save</mat-icon>
+
+              {{
+                modoEdicao()
+                  ? 'Salvar alterações'
+                  : 'Cadastrar médico'
+              }}
+
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    }
+
+  </div>
+
+</div>

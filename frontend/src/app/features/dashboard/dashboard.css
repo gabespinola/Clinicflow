@@ -1,0 +1,250 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 4px 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
+}
+
+.subtitle {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+/* CARDS */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.card-resumo {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  min-height: 92px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef2ff;
+  color: #3f51b5;
+
+  flex-shrink: 0;
+}
+
+.card-icon .material-icons {
+  font-size: 25px;
+}
+
+.card-label {
+  display: block;
+  margin-bottom: 4px;
+
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.card-valor {
+  display: block;
+
+  color: #111827;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* PRÓXIMAS CONSULTAS */
+
+.proximas-consultas {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.section-header p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* LISTA */
+
+.lista-consultas {
+  display: flex;
+  flex-direction: column;
+}
+
+.consulta-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  align-items: center;
+  gap: 20px;
+
+  padding: 16px 24px;
+
+  border-bottom: 1px solid #f0f1f3;
+}
+
+.consulta-item:last-child {
+  border-bottom: none;
+}
+
+.consulta-data {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.consulta-data strong {
+  font-size: 15px;
+  color: #111827;
+}
+
+.consulta-data span {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.consulta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.consulta-info strong {
+  font-size: 14px;
+  color: #111827;
+}
+
+.consulta-info span {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.status {
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #e8f5e9;
+  color: #2e7d32;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* SEM CONSULTAS */
+
+.sem-consultas {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+}
+
+.sem-consultas .material-icons {
+  font-size: 38px;
+  margin-bottom: 8px;
+  color: #9ca3af;
+}
+
+.sem-consultas p {
+  margin: 0;
+}
+
+/* CARREGAMENTO / ERRO */
+
+.state-container {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  color: #6b7280;
+}
+
+.state-container button {
+  padding: 8px 16px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 1100px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .consulta-item {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .status {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

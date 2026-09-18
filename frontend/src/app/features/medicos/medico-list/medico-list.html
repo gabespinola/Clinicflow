@@ -1,0 +1,306 @@
+<div class="page">
+
+  <div class="page-header">
+    <div>
+      <h1>Médicos</h1>
+      <p class="subtitle">
+        Gerencie os médicos cadastrados na clínica
+      </p>
+    </div>
+
+    <button
+      mat-flat-button
+      color="primary"
+      routerLink="/medicos/novo"
+    >
+      <mat-icon>add</mat-icon>
+      Novo médico
+    </button>
+  </div>
+
+  <div class="card">
+
+    @if (carregando()) {
+
+      <div class="state-container">
+        <mat-spinner diameter="36"></mat-spinner>
+        <span>Carregando médicos...</span>
+      </div>
+
+    } @else if (erro()) {
+
+      <div class="state-container">
+        <mat-icon class="state-icon">cloud_off</mat-icon>
+
+        <span>
+          Não foi possível carregar os médicos.
+        </span>
+
+        <button
+          mat-stroked-button
+          (click)="carregarMedicos()"
+        >
+          Tentar novamente
+        </button>
+      </div>
+
+    } @else if (medicos().length === 0) {
+
+      <div class="state-container">
+
+        <mat-icon class="state-icon">
+          medical_services
+        </mat-icon>
+
+        <strong>
+          Nenhum médico cadastrado
+        </strong>
+
+        <span>
+          Cadastre o primeiro médico da clínica.
+        </span>
+
+        <button
+          mat-flat-button
+          color="primary"
+          routerLink="/medicos/novo"
+        >
+          <mat-icon>add</mat-icon>
+          Cadastrar médico
+        </button>
+
+      </div>
+
+    } @else {
+
+      <!-- CAMPO DE BUSCA -->
+      <div class="busca-container">
+
+        <div class="busca">
+
+          <mat-icon class="busca-icon">
+            search
+          </mat-icon>
+
+          <input
+            type="text"
+            placeholder="Buscar por nome, CRM ou especialidade..."
+            [value]="termoBusca()"
+            (input)="atualizarBusca($event)"
+          >
+
+          @if (termoBusca()) {
+
+            <button
+              mat-icon-button
+              type="button"
+              (click)="limparBusca()"
+              matTooltip="Limpar busca"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+      @if (medicosFiltrados().length === 0) {
+
+        <div class="state-container">
+
+          <mat-icon class="state-icon">
+            search_off
+          </mat-icon>
+
+          <p>
+            Nenhum médico encontrado para
+            <strong>"{{ termoBusca() }}"</strong>.
+          </p>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="limparBusca()"
+          >
+            Limpar busca
+          </button>
+
+        </div>
+
+      } @else {
+
+        <!-- TABELA -->
+        <table
+          mat-table
+          matSort
+          (matSortChange)="ordenar($event)"
+          [dataSource]="medicosPaginados()"
+          class="tabela"
+        >
+
+          <!-- NOME -->
+          <ng-container matColumnDef="nome">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Nome
+            </th>
+
+            <td mat-cell *matCellDef="let medico">
+              <span class="nome-cell">
+                {{ medico.nome }}
+              </span>
+            </td>
+
+          </ng-container>
+
+          <!-- CRM -->
+          <ng-container matColumnDef="crm">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              CRM
+            </th>
+
+            <td mat-cell *matCellDef="let medico">
+              {{ medico.crm }}
+            </td>
+
+          </ng-container>
+
+          <!-- ESPECIALIDADE -->
+          <ng-container matColumnDef="especialidade">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Especialidade
+            </th>
+
+            <td mat-cell *matCellDef="let medico">
+              {{ medico.especialidade }}
+            </td>
+
+          </ng-container>
+
+          <!-- TELEFONE -->
+          <ng-container matColumnDef="telefone">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Telefone
+            </th>
+
+            <td mat-cell *matCellDef="let medico">
+              {{ medico.telefone || '-' }}
+            </td>
+
+          </ng-container>
+
+          <!-- E-MAIL -->
+          <ng-container matColumnDef="email">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              E-mail
+            </th>
+
+            <td mat-cell *matCellDef="let medico">
+              {{ medico.email || '-' }}
+            </td>
+
+          </ng-container>
+
+          <!-- AÇÕES -->
+          <ng-container matColumnDef="acoes">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="col-acoes"
+            >
+              Ações
+            </th>
+
+            <td
+              mat-cell
+              *matCellDef="let medico"
+              class="col-acoes"
+            >
+
+              <button
+                mat-icon-button
+                [routerLink]="['/medicos', medico.id]"
+                matTooltip="Visualizar médico"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                [routerLink]="['/medicos', medico.id, 'editar']"
+                matTooltip="Editar médico"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                class="btn-danger"
+                (click)="excluir(medico)"
+                matTooltip="Excluir médico"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="colunas"
+          ></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: colunas;"
+          ></tr>
+
+        </table>
+
+        <!-- PAGINAÇÃO -->
+        <mat-paginator
+          [length]="medicosFiltrados().length"
+          [pageIndex]="paginaAtual()"
+          [pageSize]="tamanhoPagina()"
+          [pageSizeOptions]="[5, 10, 20]"
+          [showFirstLastButtons]="true"
+          (page)="mudarPagina($event)"
+          aria-label="Paginação de médicos"
+        >
+        </mat-paginator>
+
+      }
+
+    }
+
+  </div>
+
+</div>

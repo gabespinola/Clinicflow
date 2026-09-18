@@ -1,0 +1,188 @@
+<div class="page">
+
+  <header class="page-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="subtitle">
+        Visão geral da clínica
+      </p>
+    </div>
+  </header>
+
+  @if (carregando()) {
+
+    <div class="state-container">
+      <p>Carregando informações...</p>
+    </div>
+
+  } @else if (erro()) {
+
+    <div class="state-container">
+      <p>
+        Não foi possível carregar as informações do dashboard.
+      </p>
+
+      <button
+        type="button"
+        (click)="carregarDashboard()"
+      >
+        Tentar novamente
+      </button>
+    </div>
+
+  } @else {
+
+    <!-- CARDS -->
+    <section class="cards">
+
+      <div class="card-resumo">
+        <div class="card-icon">
+          <span class="material-icons">
+            groups
+          </span>
+        </div>
+
+        <div>
+          <span class="card-label">
+            Pacientes
+          </span>
+
+          <strong class="card-valor">
+            {{ totalPacientes() }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="card-resumo">
+        <div class="card-icon">
+          <span class="material-icons">
+            medical_services
+          </span>
+        </div>
+
+        <div>
+          <span class="card-label">
+            Médicos
+          </span>
+
+          <strong class="card-valor">
+            {{ totalMedicos() }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="card-resumo">
+        <div class="card-icon">
+          <span class="material-icons">
+            event
+          </span>
+        </div>
+
+        <div>
+          <span class="card-label">
+            Consultas agendadas
+          </span>
+
+          <strong class="card-valor">
+            {{ consultasAgendadas() }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="card-resumo">
+        <div class="card-icon">
+          <span class="material-icons">
+            task_alt
+          </span>
+        </div>
+
+        <div>
+          <span class="card-label">
+            Consultas realizadas
+          </span>
+
+          <strong class="card-valor">
+            {{ consultasRealizadas() }}
+          </strong>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PRÓXIMAS CONSULTAS -->
+    <section class="proximas-consultas">
+
+      <div class="section-header">
+        <div>
+          <h2>Próximas consultas</h2>
+
+          <p>
+            Acompanhe os próximos agendamentos da clínica
+          </p>
+        </div>
+      </div>
+
+      @if (proximasConsultas().length === 0) {
+
+        <div class="sem-consultas">
+          <span class="material-icons">
+            event_available
+          </span>
+
+          <p>
+            Nenhuma consulta futura agendada.
+          </p>
+        </div>
+
+      } @else {
+
+        <div class="lista-consultas">
+
+          @for (
+            consulta of proximasConsultas();
+            track consulta.id
+          ) {
+
+            <div class="consulta-item">
+
+              <div class="consulta-data">
+
+                <strong>
+                  {{ consulta.dataHora | date:'dd/MM' }}
+                </strong>
+
+                <span>
+                  {{ consulta.dataHora | date:'HH:mm' }}
+                </span>
+
+              </div>
+
+              <div class="consulta-info">
+
+                <strong>
+                  {{ consulta.pacienteNome }}
+                </strong>
+
+                <span>
+                  {{ consulta.medicoNome }}
+                </span>
+
+              </div>
+
+              <span class="status">
+                Agendada
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</div>

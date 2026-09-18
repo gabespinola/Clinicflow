@@ -1,0 +1,173 @@
+<div class="page">
+
+  <a routerLink="/consultas" class="voltar">
+    <mat-icon>arrow_back</mat-icon>
+    Voltar para consultas
+  </a>
+
+  @if (carregando()) {
+
+    <div class="state-container">
+      <mat-spinner diameter="36"></mat-spinner>
+      <span>Carregando consulta...</span>
+    </div>
+
+  } @else if (consulta(); as c) {
+
+    <div class="header-card">
+
+      <div class="header-icon">
+        <mat-icon>event</mat-icon>
+      </div>
+
+      <div class="header-info">
+
+        <h1>Consulta</h1>
+
+        <div class="meta">
+          {{ c.dataHora | date:'dd/MM/yyyy' }}
+          às
+          {{ c.dataHora | date:'HH:mm' }}
+        </div>
+
+      </div>
+
+      <mat-chip
+        [class]="'status-' + c.status.toLowerCase()"
+      >
+        {{ c.status }}
+      </mat-chip>
+
+      <button
+        mat-stroked-button
+        [routerLink]="['/consultas', c.id, 'editar']"
+      >
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        <mat-icon>people</mat-icon>
+        <h2>Participantes</h2>
+      </div>
+
+      <div class="info-grid">
+
+        <div class="info-item">
+
+          <span class="label">
+            Paciente
+          </span>
+
+          <a
+            class="value-link"
+            [routerLink]="['/pacientes', c.pacienteId]"
+          >
+            <mat-icon>person</mat-icon>
+            {{ c.pacienteNome }}
+          </a>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+            Médico
+          </span>
+
+          <a
+            class="value-link"
+            [routerLink]="['/medicos', c.medicoId]"
+          >
+            <mat-icon>medical_services</mat-icon>
+            {{ c.medicoNome }}
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        <mat-icon>calendar_month</mat-icon>
+        <h2>Agendamento</h2>
+      </div>
+
+      <div class="info-grid">
+
+        <div class="info-item">
+
+          <span class="label">
+            Data
+          </span>
+
+          <span class="value">
+            {{ c.dataHora | date:'dd/MM/yyyy' }}
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+            Horário
+          </span>
+
+          <span class="value">
+            {{ c.dataHora | date:'HH:mm' }}
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+            Status
+          </span>
+
+          <span class="value">
+            {{ c.status }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        <mat-icon>notes</mat-icon>
+        <h2>Observações</h2>
+      </div>
+
+      @if (c.observacoes) {
+
+        <p class="observacoes">
+          {{ c.observacoes }}
+        </p>
+
+      } @else {
+
+        <p class="sem-informacao">
+          Nenhuma observação registrada para esta consulta.
+        </p>
+
+      }
+
+    </div>
+
+  }
+
+</div>

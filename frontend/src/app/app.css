@@ -1,0 +1,60 @@
+.app-shell {
+  height: 100vh;
+}
+
+.sidenav {
+  width: var(--sidenav-width);
+  background-color: #16213e;
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px 28px 24px;
+}
+
+.brand-icon {
+  color: var(--color-primary);
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.brand-name {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.nav-list {
+  padding: 0 12px;
+}
+
+.nav-item {
+  border-radius: 8px;
+  margin-bottom: 4px;
+  --mat-list-list-item-label-text-color: #cbd5e1;
+  --mat-list-list-item-leading-icon-color: #94a3b8;
+}
+
+.nav-item:hover {
+  --mat-list-list-item-label-text-color: #ffffff;
+  --mat-list-list-item-leading-icon-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.active-link {
+  --mat-list-list-item-label-text-color: #ffffff;
+  --mat-list-list-item-leading-icon-color: var(--color-primary);
+  background-color: rgba(13, 148, 136, 0.15) !important;
+}
+
+.content {
+  background-color: var(--color-bg);
+}

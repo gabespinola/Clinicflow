@@ -1,0 +1,279 @@
+<div class="page">
+
+  <header class="page-header">
+    <div>
+      <h1>Pacientes</h1>
+      <p class="subtitle">
+        Gerencie os pacientes cadastrados na clínica
+      </p>
+    </div>
+
+    <button
+      mat-flat-button
+      color="primary"
+      routerLink="/pacientes/novo"
+    >
+      <mat-icon>add</mat-icon>
+      Novo Paciente
+    </button>
+  </header>
+
+  <div class="card">
+
+    @if (carregando()) {
+
+      <div class="state-container">
+        <mat-spinner diameter="36"></mat-spinner>
+        <p>Carregando pacientes...</p>
+      </div>
+
+    } @else if (erro()) {
+
+      <div class="state-container">
+        <mat-icon class="state-icon">cloud_off</mat-icon>
+
+        <p>
+          Não foi possível conectar ao servidor.
+        </p>
+
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="carregarPacientes()"
+        >
+          Tentar novamente
+        </button>
+      </div>
+
+    } @else if (pacientes().length === 0) {
+
+      <div class="state-container">
+        <mat-icon class="state-icon">groups</mat-icon>
+
+        <p>
+          Nenhum paciente cadastrado ainda.
+        </p>
+
+        <button
+          mat-flat-button
+          color="primary"
+          routerLink="/pacientes/novo"
+        >
+          Cadastrar o primeiro paciente
+        </button>
+      </div>
+
+    } @else {
+
+      <!-- CAMPO DE BUSCA -->
+      <div class="busca-container">
+
+        <div class="busca">
+
+          <mat-icon class="busca-icon">
+            search
+          </mat-icon>
+
+          <input
+            type="text"
+            placeholder="Buscar por nome ou CPF..."
+            [value]="termoBusca()"
+            (input)="atualizarBusca($event)"
+          >
+
+          @if (termoBusca()) {
+            <button
+              mat-icon-button
+              type="button"
+              (click)="limparBusca()"
+              matTooltip="Limpar busca"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+
+        </div>
+
+      </div>
+
+      @if (pacientesFiltrados().length === 0) {
+
+        <div class="state-container">
+
+          <mat-icon class="state-icon">
+            search_off
+          </mat-icon>
+
+          <p>
+            Nenhum paciente encontrado para
+            <strong>"{{ termoBusca() }}"</strong>.
+          </p>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="limparBusca()"
+          >
+            Limpar busca
+          </button>
+
+        </div>
+
+      } @else {
+
+        <!-- TABELA -->
+        <table
+          mat-table
+          matSort
+          (matSortChange)="ordenar($event)"
+          [dataSource]="pacientesPaginados()"
+          class="tabela"
+        >
+
+          <!-- NOME -->
+          <ng-container matColumnDef="nome">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Nome
+            </th>
+
+            <td mat-cell *matCellDef="let paciente">
+              <span class="nome-cell">
+                {{ paciente.nome }}
+              </span>
+            </td>
+
+          </ng-container>
+
+          <!-- CPF -->
+          <ng-container matColumnDef="cpf">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              CPF
+            </th>
+
+            <td mat-cell *matCellDef="let paciente">
+              {{ paciente.cpf }}
+            </td>
+
+          </ng-container>
+
+          <!-- TELEFONE -->
+          <ng-container matColumnDef="telefone">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              Telefone
+            </th>
+
+            <td mat-cell *matCellDef="let paciente">
+              {{ paciente.telefone || '—' }}
+            </td>
+
+          </ng-container>
+
+          <!-- E-MAIL -->
+          <ng-container matColumnDef="email">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+            >
+              E-mail
+            </th>
+
+            <td mat-cell *matCellDef="let paciente">
+              {{ paciente.email || '—' }}
+            </td>
+
+          </ng-container>
+
+          <!-- AÇÕES -->
+          <ng-container matColumnDef="acoes">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="col-acoes"
+            >
+              Ações
+            </th>
+
+            <td
+              mat-cell
+              *matCellDef="let paciente"
+              class="col-acoes"
+            >
+
+              <button
+                mat-icon-button
+                [routerLink]="['/pacientes', paciente.id]"
+                matTooltip="Ver detalhes"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                [routerLink]="['/pacientes', paciente.id, 'editar']"
+                matTooltip="Editar"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                (click)="excluir(paciente)"
+                matTooltip="Excluir"
+                class="btn-danger"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </td>
+
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="colunas"
+          ></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: colunas;"
+          ></tr>
+
+        </table>
+
+        <!-- PAGINAÇÃO -->
+        <mat-paginator
+          [length]="pacientesFiltrados().length"
+          [pageIndex]="paginaAtual()"
+          [pageSize]="tamanhoPagina()"
+          [pageSizeOptions]="[5, 10, 20]"
+          [showFirstLastButtons]="true"
+          (page)="mudarPagina($event)"
+          aria-label="Paginação de pacientes"
+        >
+        </mat-paginator>
+
+      }
+
+    }
+
+  </div>
+
+</div>

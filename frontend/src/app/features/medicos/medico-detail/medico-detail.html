@@ -1,0 +1,112 @@
+<div class="page">
+
+  <a routerLink="/medicos" class="voltar">
+    <mat-icon>arrow_back</mat-icon>
+    Voltar para médicos
+  </a>
+
+  @if (carregando()) {
+
+    <div class="state-container">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+
+  } @else if (medico(); as m) {
+
+    <div class="header-card">
+
+      <div class="avatar">
+        {{ m.nome.charAt(0) }}
+      </div>
+
+      <div class="header-info">
+
+        <h1>{{ m.nome }}</h1>
+
+        <div class="meta">
+          <span>{{ m.especialidade }}</span>
+          <span>•</span>
+          <span>CRM {{ m.crm }}</span>
+        </div>
+
+      </div>
+
+      <button
+        mat-stroked-button
+        [routerLink]="['/medicos', m.id, 'editar']"
+      >
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        <mat-icon>badge</mat-icon>
+        <h2>Informações profissionais</h2>
+      </div>
+
+      <div class="info-grid">
+
+        <div class="info-item">
+          <span class="label">CRM</span>
+          <span class="value">
+            {{ m.crm }}
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Especialidade</span>
+          <span class="value">
+            {{ m.especialidade }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-title">
+        <mat-icon>contact_phone</mat-icon>
+        <h2>Contato</h2>
+      </div>
+
+      <div class="info-grid">
+
+        <div class="info-item">
+
+          <span class="label">
+            Telefone
+          </span>
+
+          <span class="value">
+            {{ m.telefone || 'Não informado' }}
+          </span>
+
+        </div>
+
+        <div class="info-item">
+
+          <span class="label">
+            E-mail
+          </span>
+
+          <span class="value">
+            {{ m.email || 'Não informado' }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

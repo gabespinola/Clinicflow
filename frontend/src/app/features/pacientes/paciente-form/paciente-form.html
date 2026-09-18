@@ -1,0 +1,269 @@
+<div class="page">
+
+  <a routerLink="/pacientes" class="voltar">
+    <mat-icon>arrow_back</mat-icon>
+    Voltar para pacientes
+  </a>
+
+  <div class="card">
+
+    @if (carregando()) {
+
+      <div class="state-container">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+
+    } @else {
+
+      <div class="form-header">
+        <div>
+          <h1>
+            {{ modoEdicao() ? 'Editar paciente' : 'Novo paciente' }}
+          </h1>
+
+          <p class="subtitle">
+            {{
+              modoEdicao()
+                ? 'Atualize as informações do paciente.'
+                : 'Cadastre as informações do novo paciente.'
+            }}
+          </p>
+        </div>
+
+        <div class="header-icon">
+          <mat-icon>person</mat-icon>
+        </div>
+      </div>
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="salvar()"
+        class="form"
+      >
+
+        <div class="section-title">
+          <mat-icon>badge</mat-icon>
+          <span>Dados pessoais</span>
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+        >
+          <mat-label>Nome completo</mat-label>
+
+          <mat-icon matPrefix>person</mat-icon>
+
+          <input
+            matInput
+            formControlName="nome"
+            placeholder="Ex: Maria Souza"
+          >
+
+          @if (
+            form.get('nome')?.hasError('required') &&
+            form.get('nome')?.touched
+          ) {
+            <mat-error>Nome é obrigatório</mat-error>
+          }
+
+          @if (
+            form.get('nome')?.hasError('minlength') &&
+            form.get('nome')?.touched
+          ) {
+            <mat-error>
+              Informe um nome com pelo menos 3 caracteres
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>CPF</mat-label>
+
+          <mat-icon matPrefix>fingerprint</mat-icon>
+
+          <input
+            matInput
+            formControlName="cpf"
+            placeholder="000.000.000-00"
+            maxlength="14"
+            inputmode="numeric"
+            (input)="aoDigitarCpf($event)"
+          >
+
+          @if (
+            form.get('cpf')?.hasError('required') &&
+            form.get('cpf')?.touched
+          ) {
+            <mat-error>CPF é obrigatório</mat-error>
+          }
+
+          @if (
+            form.get('cpf')?.hasError('cpfInvalido') &&
+            form.get('cpf')?.touched
+          ) {
+            <mat-error>Informe um CPF válido</mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Data de nascimento</mat-label>
+
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dataNascimento"
+            [max]="hoje"
+            placeholder="DD/MM/AAAA"
+          >
+
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker">
+          </mat-datepicker-toggle>
+
+          <mat-datepicker #picker></mat-datepicker>
+
+          @if (
+            form.get('dataNascimento')?.hasError('required') &&
+            form.get('dataNascimento')?.touched
+          ) {
+            <mat-error>
+              Data de nascimento é obrigatória
+            </mat-error>
+          }
+
+          @if (
+            form.get('dataNascimento')?.hasError('matDatepickerMax') &&
+            form.get('dataNascimento')?.touched
+          ) {
+            <mat-error>
+              A data de nascimento não pode estar no futuro
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <div class="section-title">
+          <mat-icon>contact_phone</mat-icon>
+          <span>Contato</span>
+        </div>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>Telefone</mat-label>
+
+          <mat-icon matPrefix>phone</mat-icon>
+
+          <input
+            matInput
+            formControlName="telefone"
+            placeholder="(83) 99999-9999"
+            maxlength="15"
+            inputmode="tel"
+            (input)="aoDigitarTelefone($event)"
+          >
+
+          @if (
+            form.get('telefone')?.hasError('telefoneInvalido') &&
+            form.get('telefone')?.touched
+          ) {
+            <mat-error>
+              Informe um telefone com DDD
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+
+          <mat-label>E-mail</mat-label>
+
+          <mat-icon matPrefix>mail</mat-icon>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="exemplo@email.com"
+          >
+
+          @if (
+            form.get('email')?.hasError('email') &&
+            form.get('email')?.touched
+          ) {
+            <mat-error>
+              Informe um e-mail válido
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+        >
+
+          <mat-label>Endereço</mat-label>
+
+          <mat-icon matPrefix>location_on</mat-icon>
+
+          <input
+            matInput
+            formControlName="endereco"
+            placeholder="Rua, número, bairro..."
+          >
+
+        </mat-form-field>
+
+        <div class="actions">
+
+          <button
+            mat-stroked-button
+            type="button"
+            routerLink="/pacientes"
+            [disabled]="salvando()"
+          >
+            Cancelar
+          </button>
+
+          <button
+            mat-flat-button
+            type="submit"
+            class="btn-primary"
+            [disabled]="salvando()"
+          >
+
+            @if (salvando()) {
+
+              <mat-spinner
+                diameter="18"
+                class="btn-spinner">
+              </mat-spinner>
+
+              Salvando...
+
+            } @else {
+
+              <mat-icon>save</mat-icon>
+
+              {{
+                modoEdicao()
+                  ? 'Salvar alterações'
+                  : 'Cadastrar paciente'
+              }}
+
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+    }
+
+  </div>
+</div>

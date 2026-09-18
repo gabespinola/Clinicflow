@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>
+  <mat-icon>warning</mat-icon>
+  {{ data.titulo }}
+</h2>
+
+<mat-dialog-content>
+  <p>
+    {{ data.mensagem }}
+  </p>
+
+  <p>
+    <strong>Essa ação não pode ser desfeita.</strong>
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="cancelar()"
+  >
+    {{ data.textoCancelar || 'Cancelar' }}
+  </button>
+
+  <button
+    mat-flat-button
+    type="button"
+    (click)="confirmar()"
+  >
+    <mat-icon>delete</mat-icon>
+    {{ data.textoConfirmar || 'Excluir' }}
+  </button>
+
+</mat-dialog-actions>
